@@ -1,5 +1,6 @@
 package com.example.placesandactivities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    static final String BUNDLE_SAVE_INDEX="BUNDLE_SAVE_INDEX";
     private ImageView imageView;
     private ImageButton rightbt, leftbt;
     private int counter1 = -1;
@@ -42,6 +44,24 @@ public class MainActivity extends AppCompatActivity {
         leftbt = findViewById(R.id.leftbt);
         mrandom = new Random();
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(BUNDLE_SAVE_INDEX,counter1);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState!=null){
+            counter1=savedInstanceState.getInt(BUNDLE_SAVE_INDEX);
+            if(counter1!=-1){
+                imagedrawable = ContextCompat.getDrawable(this, array[counter1]);
+                imageView.setImageDrawable(imagedrawable);
+            }
+        }
     }
 
     public void random(View view) {
